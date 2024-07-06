@@ -1,7 +1,8 @@
 import 'dart:io';
+
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 class DbHelper {
   Database? db;
@@ -35,19 +36,26 @@ class DbHelper {
     db = await checkDB();
     String query = "INSERT INTO category (name) VALUES ('$category')";
     db!.rawInsert(query);
+    print("=====================================$query");
   }
 
-  Future<void> readCategory() async {
+  Future<List<Map>> readCategory() async {
     db = await checkDB();
-    //List<Map> query = "SELECT * From category";
+    String query = "SELECT * FROM category WHERE id";
+    List<Map> data = await db!.rawQuery(query);
 
+    return data;
   }
 
-  void deleteCategory() {}
-
-  Future<void> updateCategory(String name,int id) async {
+  Future<void> deleteCategory(int id) async {
     db = await checkDB();
-   String query = "UPDATE category SET name = '$name' WHERE id = '$id'";
-   db!.rawUpdate(query);
+    String query = "DELETE FROM category WHERE id = $id";
+    db!.rawDelete(query);
+  }
+
+  Future<void> updateCategory(String name, int id) async {
+    db = await checkDB();
+    String query = "UPDATE category SET name = '$name' WHERE id = '$id'";
+    db!.rawUpdate(query);
   }
 }
