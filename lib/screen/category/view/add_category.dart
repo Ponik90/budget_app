@@ -12,6 +12,7 @@ class AddCategoryScreen extends StatefulWidget {
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   TextEditingController txtCategory = TextEditingController();
+  TextEditingController txtUpdate = TextEditingController();
   CategoryController controller = Get.put(CategoryController());
 
   @override
@@ -38,9 +39,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              DbHelper db = DbHelper();
-              db.insertCategory(txtCategory.text);
-              db.readCategory();
+              if (txtCategory.text.isNotEmpty) {
+                DbHelper db = DbHelper();
+                db.insertCategory(txtCategory.text);
+                controller.getReadData();
+              }
             },
             child: const Text("Add"),
           ),
@@ -66,7 +69,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                               DbHelper db = DbHelper();
                               db.deleteCategory(
                                   controller.readData[index]['id']);
-                              db.readCategory();
+                              controller.getReadData();
                             },
                             icon: const Icon(Icons.delete),
                           ),
@@ -84,14 +87,24 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   }
 
   void updateDialog(int index) {
+    txtUpdate.text = controller.readData[index]['name'];
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text("Update"),
           actions: [
+            TextField(
+              controller: txtUpdate,
+            ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                DbHelper db = DbHelper();
+                db.updateCategory(
+                    txtUpdate.text, controller.readData[index]['id']);
+                controller.getReadData();
+                Navigator.pop(context);
+              },
               child: const Text("Submit"),
             ),
           ],

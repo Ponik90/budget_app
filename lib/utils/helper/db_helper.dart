@@ -36,12 +36,11 @@ class DbHelper {
     db = await checkDB();
     String query = "INSERT INTO category (name) VALUES ('$category')";
     db!.rawInsert(query);
-    print("=====================================$query");
   }
 
   Future<List<Map>> readCategory() async {
     db = await checkDB();
-    String query = "SELECT * FROM category WHERE id";
+    String query = "SELECT * FROM category";
     List<Map> data = await db!.rawQuery(query);
 
     return data;
@@ -55,7 +54,9 @@ class DbHelper {
 
   Future<void> updateCategory(String name, int id) async {
     db = await checkDB();
+
     String query = "UPDATE category SET name = '$name' WHERE id = '$id'";
+    print("===========================$name $id ");
     db!.rawUpdate(query);
   }
 }
