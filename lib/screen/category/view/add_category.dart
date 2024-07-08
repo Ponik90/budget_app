@@ -40,9 +40,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           ElevatedButton(
             onPressed: () {
               if (txtCategory.text.isNotEmpty) {
-                DbHelper db = DbHelper();
-                db.insertCategory(txtCategory.text);
-                controller.getReadData();
+                controller.insertCategory(txtCategory.text);
               }
             },
             child: const Text("Add"),
@@ -66,10 +64,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                           ),
                           IconButton(
                             onPressed: () {
-                              DbHelper db = DbHelper();
-                              db.deleteCategory(
-                                  controller.readData[index]['id']);
-                              controller.getReadData();
+                              controller.deleteCategory(
+                                controller.readData[index]['id'],
+                              );
                             },
                             icon: const Icon(Icons.delete),
                           ),
@@ -99,10 +96,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             ),
             TextButton(
               onPressed: () {
-                DbHelper db = DbHelper();
-                db.updateCategory(
-                    txtUpdate.text, controller.readData[index]['id']);
-                controller.getReadData();
+                controller.updateCategory(
+                  txtUpdate.text,
+                  controller.readData[index]['id'],
+                );
                 Navigator.pop(context);
               },
               child: const Text("Submit"),

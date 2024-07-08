@@ -25,7 +25,7 @@ class DbHelper {
         String query =
             "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
         String queryTransaction =
-            "CREATE TABLE trac (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
+            "CREATE TABLE transaction (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
         db.execute(query);
         db.execute(queryTransaction);
       },
@@ -56,7 +56,15 @@ class DbHelper {
     db = await checkDB();
 
     String query = "UPDATE category SET name = '$name' WHERE id = '$id'";
-    print("===========================$name $id ");
     db!.rawUpdate(query);
   }
+
+  Future<void> insertTransaction() async {
+
+    db = await checkDB();
+    String query = "Insert INTO tran";
+  }
+  void readTransaction() {}
+  void updateTransaction() {}
+  void deleteTransaction() {}
 }
