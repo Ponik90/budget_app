@@ -36,16 +36,21 @@ class _HomeScreenState extends State<HomeScreen> {
         () => ListView.builder(
           itemCount: controller.transactionList.length,
           itemBuilder: (context, index) {
-            return ListTile(
+            return ExpansionTile(
               title: Text("${controller.transactionList[index]['title']}"),
               subtitle: Text("${controller.transactionList[index]['amount']}"),
               trailing: Column(
-                children: [
-                  Text("${controller.transactionList[index]['date']}"),
-
-                  Text("${controller.transactionList[index]['status']}"),
-                ],
+                children: [],
               ),
+              children: [
+                IconButton(
+                  onPressed: () {
+                    controller
+                        .deleteDetail(controller.transactionList[index]['id']);
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
+              ],
             );
           },
         ),

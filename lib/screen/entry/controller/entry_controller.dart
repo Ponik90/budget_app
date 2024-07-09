@@ -42,4 +42,9 @@ class EntryController extends GetxController {
 
     transactionData();
   }
+
+  void deleteDetail(int id) {
+    db.deleteTransaction(id);
+    transactionData();
+  }
 }

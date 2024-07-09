@@ -63,7 +63,7 @@ class DbHelper {
       String amount,  String category,int status) async {
     db = await checkDB();
     String query =
-        "INSERT INTO ponik (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status'$category)";
+        "INSERT INTO ponik (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status','$category')";
     db!.rawInsert(query);
   }
 
@@ -76,5 +76,9 @@ class DbHelper {
 
   void updateTransaction() {}
 
-  void deleteTransaction() {}
+  Future<void> deleteTransaction(int id) async {
+    db = await  checkDB();
+    String query = "DELETE FROM ponik WHERE id =  $id";
+    db!.rawDelete(query);
+  }
 }
