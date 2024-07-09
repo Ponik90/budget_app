@@ -33,13 +33,30 @@ class EntryController extends GetxController {
   void insertDetail(String title, String amount, int status) {
     db.insertTransaction(
       title,
-      time.toString(),
-      date.toString(),
+      "${time.value.hour}:${time.value.minute}",
+      "${date.value.day}/${date.value.month}/${date.value.year}",
       amount,
       select.value!,
       status,
     );
 
+    transactionData();
+  }
+
+  void updateDetail(
+    int id,
+    String title,
+    String amount,
+
+  ) {
+    db.updateTransaction(
+      id,
+      title,
+      amount,
+      "${time.value.hour}:${time.value.minute}",
+      "${date.value.day}/${date.value.month}/${date.value.year}",
+      select.value!,
+    );
     transactionData();
   }
 

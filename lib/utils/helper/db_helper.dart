@@ -60,7 +60,7 @@ class DbHelper {
   }
 
   Future<void> insertTransaction(String title, String time, String date,
-      String amount,  String category,int status) async {
+      String amount, String category, int status) async {
     db = await checkDB();
     String query =
         "INSERT INTO ponik (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status','$category')";
@@ -74,11 +74,25 @@ class DbHelper {
     return data;
   }
 
-  void updateTransaction() {}
+  Future<void> updateTransaction(
+    int id,
+    String title,
+    String amount,
+    String time,
+    String date,
+    String category,
+  ) async {
+    db = await checkDB();
+    String query =
+        "UPDATE ponik SET title = '$title',time = '$time,date = '$date',category = '$category, amount = '$amount', WHERE id  = '$id'";
+
+    db!.rawUpdate(query);
+  }
 
   Future<void> deleteTransaction(int id) async {
-    db = await  checkDB();
+    db = await checkDB();
     String query = "DELETE FROM ponik WHERE id =  $id";
+    print("===========================$id");
     db!.rawDelete(query);
   }
 }
