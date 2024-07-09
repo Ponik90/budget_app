@@ -24,10 +24,10 @@ class DbHelper {
       onCreate: (db, version) {
         String query =
             "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
-        String queryTransaction =
-            "CREATE TABLE transaction (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
+        String query2 =
+            "CREATE TABLE ponik (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
         db.execute(query);
-        db.execute(queryTransaction);
+        db.execute(query2);
       },
     );
   }
@@ -59,12 +59,22 @@ class DbHelper {
     db!.rawUpdate(query);
   }
 
-  Future<void> insertTransaction() async {
-
+  Future<void> insertTransaction(String title, String time, String date,
+      String amount,  String category,int status) async {
     db = await checkDB();
-    String query = "Insert INTO tran";
+    String query =
+        "INSERT INTO ponik (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status'$category)";
+    db!.rawInsert(query);
   }
-  void readTransaction() {}
+
+  Future<List<Map>> readTransaction() async {
+    db = await checkDB();
+    String query = "SELECT * FROM ponik";
+    List<Map> data = await db!.rawQuery(query);
+    return data;
+  }
+
   void updateTransaction() {}
+
   void deleteTransaction() {}
 }
