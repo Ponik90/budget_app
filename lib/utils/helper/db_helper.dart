@@ -84,7 +84,7 @@ class DbHelper {
   ) async {
     db = await checkDB();
     String query =
-        "UPDATE ponik SET title = '$title',time = '$time,date = '$date',category = '$category, amount = '$amount', WHERE id  = '$id'";
+        "UPDATE ponik SET title = '$title',time = '$time',date = '$date',category = '$category', amount = '$amount' WHERE id  = '$id'";
 
     db!.rawUpdate(query);
   }
@@ -92,7 +92,6 @@ class DbHelper {
   Future<void> deleteTransaction(int id) async {
     db = await checkDB();
     String query = "DELETE FROM ponik WHERE id =  $id";
-    print("===========================$id");
     db!.rawDelete(query);
   }
 }

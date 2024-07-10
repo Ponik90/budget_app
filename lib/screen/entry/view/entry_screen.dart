@@ -1,5 +1,7 @@
 import 'package:budget_app/screen/entry/controller/entry_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class EntryScreen extends StatefulWidget {
@@ -24,119 +26,236 @@ class _EntryScreenState extends State<EntryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Income / Expanse"),
-      ),
-      body: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: txtTitle,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "title",
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Enter the title";
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: txtAmount,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "amount",
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "Enter the amount";
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Obx(
-              () => DropdownButton(
-                hint: const Text("select category"),
-                isExpanded: true,
-                value: controller.select.value,
-                items: controller.categoryList
-                    .map(
-                      (element) => DropdownMenuItem(
-                        value: element['name'],
-                        child: Text("${element['name']}"),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  controller.select.value = value as String;
-                },
-              ),
-            ),
-            Obx(
-              () => Row(
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus!.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Add Funds"),
+          centerTitle: true,
+        ),
+        backgroundColor: const Color(0xffFFF6E9),
+        body: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TextButton(
-                    onPressed: () async {
-                      DateTime? d1 = await showDatePicker(
-                        context: context,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2300),
-                      );
-                      if (d1 != null) {
-                        controller.changeDate(d1);
-                      }
-                    },
-                    child: Text(
-                        "${controller.date.value.day}/${controller.date.value.month}/${controller.date.value.year}"),
+                  const Text(
+                    "Title",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      TimeOfDay? t1 = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-
-                      if (t1 != null) {
-                        controller.changeTime(t1);
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: txtTitle,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      contentPadding: EdgeInsets.only(left: 16),
+                      hintText: "title",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter the title";
                       }
+                      return null;
                     },
-                    child: Text(
-                        "${controller.time.value.hour} : ${controller.time.value.minute}"),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    "Amount",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: txtAmount,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.green,
+                          style: BorderStyle.solid,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.only(left: 16),
+                      hintText: "amount",
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter the amount";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    "Category",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Obx(
+                    () => DropdownButton(
+                      hint: const Text(
+                        "select category",
+                      ),
+                      isExpanded: true,
+                      underline: const Divider(),
+                      value: controller.select.value,
+                      items: controller.categoryList
+                          .map(
+                            (element) => DropdownMenuItem(
+                              value: element['name'],
+                              child: Text(
+                                "${element['name']}",
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        controller.select.value = value as String;
+                      },
+                    ),
+                  ),
+                  const Text(
+                    "Date/Time",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton.icon(
+                          onPressed: () async {
+                            DateTime? d1 = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2300),
+                            );
+                            if (d1 != null) {
+                              controller.changeDate(d1);
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.calendar_month,
+                            color: Colors.black54,
+                          ),
+                          label: Text(
+                            "${controller.date.value.day}/${controller.date.value.month}/${controller.date.value.year}",
+                            style: const TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () async {
+                            TimeOfDay? t1 = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+
+                            if (t1 != null) {
+                              controller.changeTime(t1);
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.watch_later,
+                            color: Colors.black54,
+                          ),
+                          label: Text(
+                            "${controller.time.value.hour} : ${controller.time.value.minute}",
+                            style: const TextStyle(color: Colors.black54),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            controller.insertDetail(
+                              txtTitle.text,
+                              txtAmount.text,
+                              0,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Data add"),
+                              ),
+                            );
+                            FocusManager.instance.primaryFocus!.unfocus();
+                            formKey.currentState!.reset();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green),
+                        child: const Text(
+                          "Income",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            controller.insertDetail(
+                              txtTitle.text,
+                              txtAmount.text,
+                              1,
+                            );
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Data add"),
+                              ),
+                            );
+                            FocusManager.instance.primaryFocus!.unfocus();
+                            formKey.currentState!.reset();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
+                        child: const Text(
+                          "Expense",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      controller.insertDetail(txtTitle.text, txtAmount.text, 0);
-                    }
-                  },
-                  child: const Text("Income"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      controller.insertDetail(txtTitle.text, txtAmount.text, 1);
-                    }
-                  },
-                  child: const Text("Expense"),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );

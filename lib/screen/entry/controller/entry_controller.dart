@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-
 import '../../../utils/helper/db_helper.dart';
 
 class EntryController extends GetxController {
@@ -47,14 +45,13 @@ class EntryController extends GetxController {
     int id,
     String title,
     String amount,
-
   ) {
     db.updateTransaction(
       id,
       title,
       amount,
-      "${time.value.hour}:${time.value.minute}",
-      "${date.value.day}/${date.value.month}/${date.value.year}",
+      "${time.value.hour.toString()}:${time.value.minute.toString()}",
+      "${date.value.day.toString()}/${date.value.month.toString()}/${date.value.year.toString()}",
       select.value!,
     );
     transactionData();

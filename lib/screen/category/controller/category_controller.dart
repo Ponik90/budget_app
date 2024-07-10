@@ -7,10 +7,9 @@ class CategoryController extends GetxController {
   Future<void> getReadData() async {
     DbHelper db = DbHelper();
     readData.value = await db.readCategory();
-
   }
 
-  Future<void> updateCategory(String name,int id) async {
+  Future<void> updateCategory(String name, int id) async {
     DbHelper db = DbHelper();
     await db.updateCategory(name, id);
     getReadData();

@@ -1,4 +1,5 @@
 import 'package:budget_app/screen/entry/controller/entry_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("budget "),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -44,24 +46,43 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text("${controller.transactionList[index]['title']}"),
               subtitle:
                   Text("${controller.transactionList[index]['category']}"),
+              trailing: Text(
+                "${controller.transactionList[index]['amount']}",
+                style: TextStyle(
+                  color: controller.transactionList[index]['status'] == 0
+                      ? Colors.green
+                      : Colors.red,
+                  fontSize: 16,
+                ),
+              ),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        updateDialog(index);
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        controller.deleteDetail(
-                            controller.transactionList[index]['id']);
-                      },
-                      icon: const Icon(Icons.delete),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("${controller.transactionList[index]['time']}"),
+                      Text("${controller.transactionList[index]['date']}"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              updateDialog(index);
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              controller.deleteDetail(
+                                  controller.transactionList[index]['id']);
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             );
@@ -80,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void updateDialog(int index) {
     txtTitle.text = controller.transactionList[index]['title'];
     txtAmount.text = controller.transactionList[index]['amount'];
+
     showDialog(
       context: context,
       builder: (context) {
@@ -89,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: const Text("Update detail"),
             actions: [
               TextFormField(
+                controller: txtTitle,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   hintText: txtTitle.text,
@@ -104,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               TextFormField(
+                controller: txtAmount,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   hintText: txtAmount.text,
@@ -138,8 +162,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 10,
               ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: const Text("Date/Time"),
+              ),
               Obx(
                 () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton(
                       onPressed: () async {
@@ -175,24 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 10,
               ),
-              // Row(
-              //   children: [
-              //     ElevatedButton(
-              //       onPressed: () {
-              //         controller.transactionList[index]['status'];
-              //       },
-
-              //       child: const Text("Income"),
-              //     ),
-              //     ElevatedButton(
-              //       onPressed: () {
-              //         controller.transactionList[index]['status'] ;
-              //       },
-              //       child: const Text("Expense"),
-              //     ),
-              //   ],
-              // ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                     onPressed: () {
@@ -202,11 +215,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      controller.updateDetail(
-                        controller.transactionList[index]['id'],
-                        txtTitle.text,
-                        txtAmount.text,
-                      );
+                      if (formKey.currentState!.validate()) {
+                        controller.updateDetail(
+                          controller.transactionList[index]['id'],
+                          txtTitle.text,
+                          txtAmount.text,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Data Updated"),
+                          ),
+                        );
+                        FocusManager.instance.primaryFocus!.unfocus();
+                        Navigator.pop(context);
+                      }
                     },
                     child: const Text("update"),
                   ),
