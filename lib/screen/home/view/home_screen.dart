@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     controller.categoryData();
     controller.transactionData();
+
   }
 
   @override
@@ -36,6 +37,34 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: const Icon(Icons.category_rounded),
           ),
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  onTap: () {
+                    controller.filterData("all");
+                  },
+                  textStyle: const TextStyle(color: Colors.black),
+                  child: const Text("All"),
+                ),
+                PopupMenuItem(
+                  onTap: () {
+                    controller.filterData("income");
+
+                  },
+                  textStyle: const TextStyle(color: Colors.black),
+                  child: const Text("Short by income"),
+                ),
+                PopupMenuItem(
+                  onTap: () {
+                    controller.filterData("expanse");
+                  },
+                  textStyle: const TextStyle(color: Colors.black),
+                  child: const Text("Short by expanse"),
+                ),
+              ];
+            },
+          )
         ],
       ),
       body: Obx(
@@ -162,9 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
-                child: const Text("Date/Time"),
+                child: Text("Date/Time"),
               ),
               Obx(
                 () => Row(

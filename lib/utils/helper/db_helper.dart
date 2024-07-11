@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,7 +24,7 @@ class DbHelper {
         String query =
             "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
         String query2 =
-            "CREATE TABLE ponik (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
+            "CREATE TABLE trans (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
         db.execute(query);
         db.execute(query2);
       },
@@ -63,13 +62,13 @@ class DbHelper {
       String amount, String category, int status) async {
     db = await checkDB();
     String query =
-        "INSERT INTO ponik (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status','$category')";
+        "INSERT INTO trans (title,time,date,amount,status,category) VALUES ('$title','$time','$date','$amount','$status','$category')";
     db!.rawInsert(query);
   }
 
   Future<List<Map>> readTransaction() async {
     db = await checkDB();
-    String query = "SELECT * FROM ponik";
+    String query = "SELECT * FROM trans";
     List<Map> data = await db!.rawQuery(query);
     return data;
   }
@@ -84,14 +83,21 @@ class DbHelper {
   ) async {
     db = await checkDB();
     String query =
-        "UPDATE ponik SET title = '$title',time = '$time',date = '$date',category = '$category', amount = '$amount' WHERE id  = '$id'";
+        "UPDATE trans SET title = '$title',time = '$time',date = '$date',category = '$category', amount = '$amount' WHERE id  = '$id'";
 
     db!.rawUpdate(query);
   }
 
   Future<void> deleteTransaction(int id) async {
     db = await checkDB();
-    String query = "DELETE FROM ponik WHERE id =  $id";
+    String query = "DELETE FROM trans WHERE id =  $id";
     db!.rawDelete(query);
+  }
+
+  Future<List<Map>> filterTransaction(int data) async {
+    db = await checkDB();
+    String query = "SELECT * FROM trans WHERE status = $data";
+    List<Map> filter = await db!.rawQuery(query);
+    return filter;
   }
 }

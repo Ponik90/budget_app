@@ -4,6 +4,7 @@ import '../../../utils/helper/db_helper.dart';
 
 class EntryController extends GetxController {
   RxList<Map> transactionList = <Map>[].obs;
+  List<Map> filterTransactionList = <Map>[];
 
   RxList<Map> categoryList = <Map>[].obs;
   RxnString select = RxnString();
@@ -11,6 +12,7 @@ class EntryController extends GetxController {
 
   Rx<DateTime> date = DateTime.now().obs;
   Rx<TimeOfDay> time = TimeOfDay.now().obs;
+  RxString shortBy = "all".obs;
 
   Future<void> categoryData() async {
     categoryList.value = await db.readCategory();
@@ -60,5 +62,18 @@ class EntryController extends GetxController {
   void deleteDetail(int id) {
     db.deleteTransaction(id);
     transactionData();
+  }
+
+  Future<void> filterData(String value) async {
+    shortBy.value = value;
+    if (shortBy.value == "all") {
+      transactionData();
+    } else if (shortBy.value == "income") {
+      filterTransactionList = await db.filterTransaction(0);
+      transactionList.value = filterTransactionList;
+    } else if (shortBy.value == "expanse") {
+      filterTransactionList = await db.filterTransaction(1);
+      transactionList.value = filterTransactionList;
+    }
   }
 }

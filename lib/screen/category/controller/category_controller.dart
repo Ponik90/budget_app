@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
   RxList<Map> readData = <Map>[].obs;
+  List<Map> searchList = <Map>[];
+  List<Map> copyList = <Map>[];
 
   Future<void> getReadData() async {
     DbHelper db = DbHelper();
     readData.value = await db.readCategory();
+    copyList = List.from(readData);
   }
 
   Future<void> updateCategory(String name, int id) async {
@@ -25,5 +28,16 @@ class CategoryController extends GetxController {
     DbHelper db = DbHelper();
     await db.insertCategory(name);
     getReadData();
+  }
+
+  void filterBySearch(String search) {
+    readData.value = copyList;
+    searchList.clear();
+    for (var x in readData) {
+      if (x['name'].contains(search)) {
+        searchList.add(x);
+      }
+    }
+    readData.value = List.from(searchList);
   }
 }

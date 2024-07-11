@@ -13,6 +13,7 @@ class AddCategoryScreen extends StatefulWidget {
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   TextEditingController txtCategory = TextEditingController();
   TextEditingController txtUpdate = TextEditingController();
+  TextEditingController txtSearch = TextEditingController();
   CategoryController controller = Get.put(CategoryController());
 
   @override
@@ -37,6 +38,13 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              SearchBar(
+                controller: txtSearch,
+
+                onChanged: (value) {
+                  controller.filterBySearch(value);
+                },
+              ),
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
