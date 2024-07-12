@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -36,10 +36,10 @@ class DbHelper {
   Future<void> insertCategory(String category, String path) async {
     db = await checkDB();
     File data = File(path);
-    Uint8List imageBytes = await data.readAsBytes();
-    String encodeImage = base64Encode(imageBytes);
+    Uint8List bytes = await data.readAsBytes();
+    String image = base64Encode(bytes);
     String query =
-        "INSERT INTO category (name,image) VALUES ('$category','$encodeImage')";
+        "INSERT INTO category (name,image) VALUES ('$category','$image')";
     db!.rawInsert(query);
   }
 

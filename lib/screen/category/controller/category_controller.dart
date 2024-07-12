@@ -7,6 +7,8 @@ class CategoryController extends GetxController {
   List<Map> copyList = <Map>[];
   RxnString imagePath = RxnString();
 
+
+
   Future<void> getReadData() async {
     DbHelper db = DbHelper();
     readData.value = await db.readCategory();
@@ -26,8 +28,10 @@ class CategoryController extends GetxController {
   }
 
   Future<void> insertCategory(String name) async {
+    print("=======================${imagePath.value}");
     DbHelper db = DbHelper();
     await db.insertCategory(name,imagePath.value!);
+
     getReadData();
   }
 

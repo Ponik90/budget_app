@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:budget_app/screen/category/controller/category_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -64,7 +65,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 () => controller.imagePath.value != null
                     ? CircleAvatar(
                         radius: 50,
+
                         backgroundImage: MemoryImage(
+
+
                           base64Decode(controller.imagePath.value!),
                         ),
                       )
@@ -82,7 +86,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   XFile? image = await picker.pickImage(
                     source: ImageSource.gallery,
                   );
+
                   controller.imagePath.value = image!.path;
+
                 },
                 child: const Text('Add'),
               ),
@@ -117,6 +123,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     itemCount: controller.readData.length,
                     itemBuilder: (context, index) {
                       return ExpansionTile(
+
                         title: Text("${controller.readData[index]['name']}"),
                         children: [
                           Row(
