@@ -81,7 +81,7 @@ class EntryController extends GetxController {
   void totalAmount() {
     if (shortBy.value == 'income') {
       for (var x in transactionList) {
-        print("===============${x['amount']}");
+
         amount = x['amount'];
       }
 

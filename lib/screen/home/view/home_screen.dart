@@ -1,7 +1,5 @@
 import 'package:budget_app/screen/entry/controller/entry_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -76,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 100,
                   color: Colors.green,
                   alignment: Alignment.center,
-                  child: Text("00"),
+                  child: const Text("00"),
                 ),
               ),
               Expanded(

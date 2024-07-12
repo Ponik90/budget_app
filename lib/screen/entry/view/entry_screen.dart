@@ -1,7 +1,5 @@
 import 'package:budget_app/screen/entry/controller/entry_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class EntryScreen extends StatefulWidget {
@@ -211,7 +209,7 @@ class _EntryScreenState extends State<EntryScreen> {
 
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Data add"),
+                                  content: Text("Successfully add"),
                                 ),
                               );
                               FocusManager.instance.primaryFocus!.unfocus();
@@ -219,7 +217,7 @@ class _EntryScreenState extends State<EntryScreen> {
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text("Enter the category"),
+                                  content: Text("Select the category"),
                                 ),
                               );
                             }
@@ -248,7 +246,6 @@ class _EntryScreenState extends State<EntryScreen> {
                               );
                               FocusManager.instance.primaryFocus!.unfocus();
                               formKey.currentState!.reset();
-
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -256,8 +253,6 @@ class _EntryScreenState extends State<EntryScreen> {
                                 ),
                               );
                             }
-
-
                           }
                         },
                         style: ElevatedButton.styleFrom(
