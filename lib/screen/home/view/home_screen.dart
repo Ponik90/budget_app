@@ -1,6 +1,7 @@
 import 'package:budget_app/screen/entry/controller/entry_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     controller.categoryData();
     controller.transactionData();
-
   }
 
   @override
@@ -50,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 PopupMenuItem(
                   onTap: () {
                     controller.filterData("income");
-
                   },
                   textStyle: const TextStyle(color: Colors.black),
                   child: const Text("Short by income"),
@@ -67,56 +66,84 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Obx(
-        () => ListView.builder(
-          itemCount: controller.transactionList.length,
-          itemBuilder: (context, index) {
-            return ExpansionTile(
-              title: Text("${controller.transactionList[index]['title']}"),
-              subtitle:
-                  Text("${controller.transactionList[index]['category']}"),
-              trailing: Text(
-                "${controller.transactionList[index]['amount']}",
-                style: TextStyle(
-                  color: controller.transactionList[index]['status'] == 0
-                      ? Colors.green
-                      : Colors.red,
-                  fontSize: 16,
+      body: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  height: 100,
+                  color: Colors.green,
+                  alignment: Alignment.center,
+                  child: Text("00"),
                 ),
               ),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: Container(
+                  height: 100,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          Obx(
+            () => Expanded(
+              child: ListView.builder(
+                itemCount: controller.transactionList.length,
+                itemBuilder: (context, index) {
+                  return ExpansionTile(
+                    title:
+                        Text("${controller.transactionList[index]['title']}"),
+                    subtitle: Text(
+                        "${controller.transactionList[index]['category']}"),
+                    trailing: Text(
+                      "${controller.transactionList[index]['amount']}",
+                      style: TextStyle(
+                        color: controller.transactionList[index]['status'] == 0
+                            ? Colors.green
+                            : Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
                     children: [
-                      Text("${controller.transactionList[index]['time']}"),
-                      Text("${controller.transactionList[index]['date']}"),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              updateDialog(index);
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              controller.deleteDetail(
-                                  controller.transactionList[index]['id']);
-                            },
-                            icon: const Icon(Icons.delete),
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                "${controller.transactionList[index]['time']}"),
+                            Text(
+                                "${controller.transactionList[index]['date']}"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    updateDialog(index);
+                                  },
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    controller.deleteDetail(controller
+                                        .transactionList[index]['id']);
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -173,6 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Obx(
                 () => DropdownButton(
+                  hint: const Text("Add Category"),
                   isExpanded: true,
                   value: controller.select.value,
                   items: controller.categoryList

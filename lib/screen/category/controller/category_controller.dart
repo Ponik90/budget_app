@@ -5,6 +5,7 @@ class CategoryController extends GetxController {
   RxList<Map> readData = <Map>[].obs;
   List<Map> searchList = <Map>[];
   List<Map> copyList = <Map>[];
+  RxnString imagePath = RxnString();
 
   Future<void> getReadData() async {
     DbHelper db = DbHelper();
@@ -26,7 +27,7 @@ class CategoryController extends GetxController {
 
   Future<void> insertCategory(String name) async {
     DbHelper db = DbHelper();
-    await db.insertCategory(name);
+    await db.insertCategory(name,imagePath.value!);
     getReadData();
   }
 

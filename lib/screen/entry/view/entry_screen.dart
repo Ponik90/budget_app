@@ -202,18 +202,27 @@ class _EntryScreenState extends State<EntryScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            controller.insertDetail(
-                              txtTitle.text,
-                              txtAmount.text,
-                              0,
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Data add"),
-                              ),
-                            );
-                            FocusManager.instance.primaryFocus!.unfocus();
-                            formKey.currentState!.reset();
+                            if (controller.select.value != null) {
+                              controller.insertDetail(
+                                txtTitle.text,
+                                txtAmount.text,
+                                0,
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Data add"),
+                                ),
+                              );
+                              FocusManager.instance.primaryFocus!.unfocus();
+                              formKey.currentState!.reset();
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Enter the category"),
+                                ),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -226,26 +235,29 @@ class _EntryScreenState extends State<EntryScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            if(controller.select.value != null)
-                              {
-                                controller.insertDetail(
-                                  txtTitle.text,
-                                  txtAmount.text,
-                                  1,
-                                );
+                            if (controller.select.value != null) {
+                              controller.insertDetail(
+                                txtTitle.text,
+                                txtAmount.text,
+                                1,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Data add"),
+                                ),
+                              );
+                              FocusManager.instance.primaryFocus!.unfocus();
+                              formKey.currentState!.reset();
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Data add"),
-                                  ),
-                                );
-                                FocusManager.instance.primaryFocus!.unfocus();
-                                formKey.currentState!.reset();
-                              }
-                            else
-                              {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Enter the category"),),);
-                              }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Enter the category"),
+                                ),
+                              );
+                            }
+
+
                           }
                         },
                         style: ElevatedButton.styleFrom(

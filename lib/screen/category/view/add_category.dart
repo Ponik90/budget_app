@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:budget_app/screen/category/controller/category_controller.dart';
-import 'package:budget_app/utils/helper/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({super.key});
@@ -15,6 +16,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   TextEditingController txtUpdate = TextEditingController();
   TextEditingController txtSearch = TextEditingController();
   CategoryController controller = Get.put(CategoryController());
+  String path = "";
 
   @override
   void initState() {
@@ -39,11 +41,50 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           child: Column(
             children: [
               SearchBar(
+                hintText: "Search category",
                 controller: txtSearch,
-
+                elevation: const MaterialStatePropertyAll(
+                  3,
+                ),
+                backgroundColor: const MaterialStatePropertyAll(Colors.white60),
+                trailing: const [
+                  Icon(Icons.search),
+                  SizedBox(
+                    width: 10,
+                  ),
+                ],
                 onChanged: (value) {
                   controller.filterBySearch(value);
                 },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Obx(
+                () => controller.imagePath.value != null
+                    ? CircleAvatar(
+                        radius: 50,
+                        backgroundImage: MemoryImage(
+                          base64Decode(controller.imagePath.value!),
+                        ),
+                      )
+                    : const CircleAvatar(
+                        radius: 50,
+                        child: Icon(
+                          Icons.person_2_outlined,
+                          size: 50,
+                        ),
+                      ),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  ImagePicker picker = ImagePicker();
+                  XFile? image = await picker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  controller.imagePath.value = image!.path;
+                },
+                child: const Text('Add'),
               ),
               TextField(
                 decoration: const InputDecoration(

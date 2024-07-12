@@ -13,6 +13,7 @@ class EntryController extends GetxController {
   Rx<DateTime> date = DateTime.now().obs;
   Rx<TimeOfDay> time = TimeOfDay.now().obs;
   RxString shortBy = "all".obs;
+  List amount = [];
 
   Future<void> categoryData() async {
     categoryList.value = await db.readCategory();
@@ -74,6 +75,16 @@ class EntryController extends GetxController {
     } else if (shortBy.value == "expanse") {
       filterTransactionList = await db.filterTransaction(1);
       transactionList.value = filterTransactionList;
+    }
+  }
+
+  void totalAmount() {
+    if (shortBy.value == 'income') {
+      for (var x in transactionList) {
+        print("===============${x['amount']}");
+        amount = x['amount'];
+      }
+
     }
   }
 }

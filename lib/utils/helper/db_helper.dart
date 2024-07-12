@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -22,7 +24,7 @@ class DbHelper {
       version: 1,
       onCreate: (db, version) {
         String query =
-            "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT)";
+            "CREATE TABLE category (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT,image BLOB)";
         String query2 =
             "CREATE TABLE trans (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,amount TEXT,time TEXT,date TEXT,category TEXT,status INTEGER)";
         db.execute(query);
@@ -31,9 +33,13 @@ class DbHelper {
     );
   }
 
-  Future<void> insertCategory(String category) async {
+  Future<void> insertCategory(String category, String path) async {
     db = await checkDB();
-    String query = "INSERT INTO category (name) VALUES ('$category')";
+    File data = File(path);
+    Uint8List imageBytes = await data.readAsBytes();
+    String encodeImage = base64Encode(imageBytes);
+    String query =
+        "INSERT INTO category (name,image) VALUES ('$category','$encodeImage')";
     db!.rawInsert(query);
   }
 
